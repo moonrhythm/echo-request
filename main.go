@@ -3,6 +3,9 @@ package main
 import (
 	"net/http"
 	"os"
+
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 )
 
 func main() {
@@ -11,7 +14,11 @@ func main() {
 		port = "8080"
 	}
 
-	http.ListenAndServe(":"+port, http.HandlerFunc(echo))
+	var h http.Handler
+	h = http.HandlerFunc(echo)
+	h = h2c.NewHandler(h, &http2.Server{})
+
+	http.ListenAndServe(":"+port, h)
 }
 
 func echo(w http.ResponseWriter, r *http.Request) {
