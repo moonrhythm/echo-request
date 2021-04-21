@@ -1,5 +1,6 @@
 build:
-	docker build -t gcr.io/moonrhythm-containers/echo-request .
-
-publish: build
-	docker push gcr.io/moonrhythm-containers/echo-request
+	buildctl build \
+		--frontend dockerfile.v0 \
+		--local dockerfile=. \
+		--local context=. \
+		--output type=image,name=gcr.io/moonrhythm-containers/echo-request,push=true
