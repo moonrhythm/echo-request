@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -22,6 +25,12 @@ func main() {
 }
 
 func echo(w http.ResponseWriter, r *http.Request) {
+	log.Printf("%s %s %s", r.Method, r.URL.String(), r.Proto)
+
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	r.Write(w)
+	fmt.Fprintf(w, "%s %s %s\r\n", r.Method, r.RequestURI, r.Proto)
+	fmt.Fprintf(w, "Host: %s\r\n", r.Host)
+	r.Header.Write(w)
+	fmt.Fprintf(w, "\r\n")
+	io.Copy(w, r.Body)
 }
