@@ -1,5 +1,7 @@
 module github.com/moonrhythm/echo-request
 
-go 1.16
+go 1.20
 
-require golang.org/x/net v0.0.0-20210420072503-d25e30425868
+require golang.org/x/net v0.8.0
+
+require golang.org/x/text v0.8.0 // indirect
